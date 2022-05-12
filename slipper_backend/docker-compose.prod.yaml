@@ -1,0 +1,24 @@
+version: '3.7'
+
+services:
+  my-backend:
+    image: asia.gcr.io/codecamp-347901/my-backend02:3.0.6  ## 업데이트가 필요하면 맨뒤에 버전 숫자를 바꿔야함
+    platform: linux/x86_64
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # volumes:
+    #   - ./src:/myfolder/src
+    # env_file:
+    #   - ./.env.prod
+    ports:
+      - 3000:3000
+
+  # my-database:
+  #   platform: linux/x86_64
+  #   image: mysql:latest
+  #   environment:
+  #     MYSQL_DATABASE: 'mydocker02'
+  #     MYSQL_ROOT_PASSWORD: 'root'
+  #   ports:
+  #     - 3306:3306
