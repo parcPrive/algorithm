@@ -2,6 +2,53 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Board {
+  id: String!
+  title: String!
+  contents: String!
+  score: Int!
+  period: String
+  coordinates: String!
+  address: String!
+  place: String!
+  images: [String!]
+}
+
 type Query {
   testAPI: String!
+  fetchBoard(boardId: String!): Board!
+  fetchBoardsPage(page: Float!): [Board!]!
 }
+
+type Mutation {
+  createBoard(createBoardInput: CreateBoardInput!): Board!
+  updateBoard(boardId: String!, updateBoardInput: UpdateBoardInput!): Board!
+  deleteBoard(boardId: String!): String!
+  uploadBoardImage(files: [Upload!]!): [String!]!
+  uploadProfileImage(files: [Upload!]!): [String!]!
+}
+
+input CreateBoardInput {
+  title: String!
+  contents: String!
+  score: Int!
+  period: String
+  coordinates: String!
+  address: String!
+  place: String!
+  images: [String!]
+}
+
+input UpdateBoardInput {
+  title: String
+  contents: String
+  score: Int
+  period: String
+  coordinates: String
+  address: String
+  place: String
+  images: [String!]
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
