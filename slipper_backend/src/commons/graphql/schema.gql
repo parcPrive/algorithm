@@ -14,18 +14,55 @@ type Board {
   images: [String!]
 }
 
+type Join {
+  id: String!
+  email: String!
+  nickname: String!
+  phone: String!
+  image: String
+  introduce: String
+  createAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
 type Query {
+  updateUser(updateUserInput: UpdateUserSaveInput!): Join!
+  fetchUser: Join!
+  fetchUsers: [Join!]!
+  deleteUser: Boolean!
   testAPI: String!
   fetchBoard(boardId: String!): Board!
   fetchBoardsPage(page: Float!): [Board!]!
 }
 
+input UpdateUserSaveInput {
+  nickname: String
+  image: String
+  introduce: String
+}
+
 type Mutation {
+  join(createUserInput: CreateUserInput!): Join!
+  getToken(phone: String!): String!
+  proofToken(phone: String!, mytoken: String!): String!
   createBoard(createBoardInput: CreateBoardInput!): Board!
   updateBoard(boardId: String!, updateBoardInput: UpdateBoardInput!): Board!
   deleteBoard(boardId: String!): String!
   uploadBoardImage(files: [Upload!]!): [String!]!
   uploadProfileImage(files: [Upload!]!): [String!]!
+}
+
+input CreateUserInput {
+  email: String!
+  pw: String!
+  nickname: String!
+  phone: String!
+  image: String
+  introduce: String
 }
 
 input CreateBoardInput {

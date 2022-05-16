@@ -10,9 +10,11 @@ import { TestAPIModule } from './apis/testAPI/test.module';
 import { BoardModule } from './apis/Board/board.module';
 import { FileModule } from './apis/file/file.module';
 import { CrontabModule } from './apis/crontab/crontab.module';
+import { JoinModule } from './apis/join/join.module';
 
 @Module({
   imports: [
+    JoinModule,
     TestAPIModule,
     CrontabModule,
     BoardModule,
