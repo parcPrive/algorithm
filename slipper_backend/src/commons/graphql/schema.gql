@@ -49,6 +49,9 @@ type Mutation {
   join(createUserInput: CreateUserInput!): Join!
   getToken(phone: String!): String!
   proofToken(phone: String!, mytoken: String!): String!
+  login(email: String!, pw: String!): String!
+  restoreAccessToken: String!
+  logout: String!
   createBoard(createBoardInput: CreateBoardInput!): Board!
   updateBoard(boardId: String!, updateBoardInput: UpdateBoardInput!): Board!
   deleteBoard(boardId: String!): String!
