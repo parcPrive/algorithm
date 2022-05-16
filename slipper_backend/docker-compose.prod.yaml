@@ -1,16 +1,15 @@
 version: '3.7'
 
 services:
-  my-backend:
-    image: asia.gcr.io/codecamp-347901/my-backend02:3.0.6  ## 업데이트가 필요하면 맨뒤에 버전 숫자를 바꿔야함
-    platform: linux/x86_64
+  slipper-backend:
     build:
       context: .
       dockerfile: Dockerfile
-    # volumes:
-    #   - ./src:/myfolder/src
-    # env_file:
-    #   - ./.env.prod
+    env_file:
+      - ./.env.prod
+    volumes:
+      - ./src:/slipper/src
+      - ./elk:/slipper/elk
     ports:
       - 3000:3000
 
@@ -22,3 +21,22 @@ services:
   #     MYSQL_ROOT_PASSWORD: 'root'
   #   ports:
   #     - 3306:3306
+
+  slipper-redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
+
+  # elasticsearch:
+  #   image: elasticsearch:7.17.0
+  #   environment:
+  #     discovery.type: single-node
+  #   ports:
+  #     - 9200:9200
+
+  # logstash:
+  #   image: logstash:7.17.0
+  #   volumes:
+  #     - ./elk/logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+  #     - ./elk/logstash/mysql-connector-java-8.0.28.jar:/usr/share/logstash/mysql-connector-java-8.0.28.jar
+  #     - ./elk/logstash/elastic_template.json:/usr/share/logstash/elastic_template.json

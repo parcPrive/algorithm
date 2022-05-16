@@ -1,7 +1,7 @@
 version: '3.7'
 
 services:
-  my-backend:
+  slipper-backend:
     build:
       context: .
       dockerfile: Dockerfile
@@ -10,25 +10,22 @@ services:
     volumes:
       - ./src:/slipper/src
       - ./elk:/slipper/elk
-
     ports:
       - 3000:3000
 
-## 작업할 때는 주석해제, 배포시에는 주석처리
-  my-database:
+  slipper-database:
     platform: linux/x86_64
     image: mysql:latest
     environment:
-      MYSQL_DATABASE: 'mydocker02'
+      MYSQL_DATABASE: 'slipper-mysql'
       MYSQL_ROOT_PASSWORD: 'root'
     ports:
       - 3306:3306
-#######
 
-  # my-redis:
-  #   image: redis:latest
-  #   ports:
-  #     - 6379:6379
+  slipper-redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
 
   # elasticsearch:
   #   image: elasticsearch:7.17.0
@@ -43,4 +40,3 @@ services:
   #     - ./elk/logstash/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
   #     - ./elk/logstash/mysql-connector-java-8.0.28.jar:/usr/share/logstash/mysql-connector-java-8.0.28.jar
   #     - ./elk/logstash/elastic_template.json:/usr/share/logstash/elastic_template.json
-
