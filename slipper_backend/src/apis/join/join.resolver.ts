@@ -15,7 +15,7 @@ export class JoinResolver {
   ) {}
 
   @Mutation(() => Join)
-  async join(
+  async createUser(
     // @Args('email') email: string,
     // @Args('pw') pw: string,
     // @Args('phone') phone: string,
