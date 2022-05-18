@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Board } from './board.entity';
 import { BoardImage } from '../BoardImage/boardImage.entity';
+import { Join } from '../join/entities/join.entity';
 
 @Injectable()
 export class BoardService {
@@ -12,6 +13,9 @@ export class BoardService {
 
     @InjectRepository(BoardImage)
     private readonly boardImageRepository: Repository<BoardImage>,
+
+    @InjectRepository(Join)
+    private readonly joinRepository: Repository<Join>,
   ) {}
 
   async findOne({ boardId }) {
@@ -41,17 +45,29 @@ export class BoardService {
 
   //게시글 작성
   async create({ createBoardInput }) {
+    const findUserId = await this.joinRepository.findOne({
+      nickname: createBoardInput.nickname,
+    });
+
+    const userId = {
+      id: findUserId.id,
+      email: findUserId.email,
+      nickname: findUserId.nickname,
+      phone: findUserId.phone,
+    };
+    console.log('asdfasdfsadf');
+
     const result = await this.boardRepository.save({
+      user: findUserId.id,
       ...createBoardInput,
     });
-    console.log('hi');
+
     console.log(result);
 
     const boardId = result.id;
     const images = result.images;
-    console.log(boardId);
-    console.log(images);
 
+    const returnImagelist = [];
     const saveImage = await Promise.all(
       images.map(async (el) => {
         //console.log(el);
@@ -66,23 +82,22 @@ export class BoardService {
           return new Promise(async (resolve, reject) => {
             const savedImage = await this.boardImageRepository.save({
               imageUrl: el,
-              board: boardId, //관계가 있는 데이터는 객체로 전달
-
-              // boardId: {
-              //   id: boardId,
-              // }, //관계가 있는 데이터는 객체로 전달
+              board: boardId,
             });
+            returnImagelist.push(savedImage);
 
             if (savedImage) resolve(savedImage);
             else reject('에러');
           });
         } else {
+          returnImagelist.push({ id: boardId, imageUrl: `[중복] ${el}` });
           return `[중복] ${el}`;
         }
       }),
     );
-    console.log(saveImage);
-    result.images = saveImage;
+    //console.log(returnImagelist);
+    result.user = userId;
+    result.images = returnImagelist;
     return result;
   }
 

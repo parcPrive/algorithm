@@ -3,11 +3,13 @@ import {
   Column,
   Entity,
   JoinColumn,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { BoardImage } from '../BoardImage/boardImage.entity';
+import { Join } from '../join/entities/join.entity';
 
 @Entity()
 @ObjectType()
@@ -18,6 +20,10 @@ export class Board {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @ManyToOne(() => Join)
+  @Field(() => Join)
+  user: Join;
 
   @Column()
   @Field(() => String)
