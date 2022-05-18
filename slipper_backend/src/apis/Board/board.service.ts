@@ -15,7 +15,10 @@ export class BoardService {
   ) {}
 
   async findOne({ boardId }) {
-    return await this.boardRepository.findOne({ where: { id: boardId } });
+    return await this.boardRepository.findOne({
+      where: { id: boardId }, //
+      relations: ['images'],
+    });
   }
 
   // async findAll() {
@@ -23,11 +26,17 @@ export class BoardService {
   // }
 
   //무한스크롤
-  async loadPage({ page }) {
+  async loadPage({ page, category, search }) {
     console.log(page);
-    const result = await this.boardRepository.createQueryBuilder('board');
 
-    console.log(result);
+    // const result = await this.boardRepository //
+    //   .createQueryBuilder('board')
+    //   .where('board.tag = :tag', { tag: tag });
+    //   .skip(5)
+    // .take(10)
+    // .getMany();
+
+    // console.log(result);
   }
 
   //게시글 작성
@@ -35,6 +44,7 @@ export class BoardService {
     const result = await this.boardRepository.save({
       ...createBoardInput,
     });
+    console.log('hi');
     console.log(result);
 
     const boardId = result.id;
@@ -71,26 +81,35 @@ export class BoardService {
         }
       }),
     );
-
-    return saveImage;
+    console.log(saveImage);
+    result.images = saveImage;
+    return result;
   }
 
   //게시글 수정
   async update({ boardId, updateBoardInput }) {
-    const oldBoard = await this.boardRepository.findOne({
+    // const oldBoard = await this.boardRepository.findOne({
+    //   where: { id: boardId },
+    // });
+
+    // const newBoard = {
+    //   ...oldBoard,
+    //   ...updateBoardInput,
+    // };
+
+    // const result = await this.boardRepository.save({
+    //   ...newBoard,
+    // });
+    // console.log(result);
+    // return result;
+
+    const test = await this.boardRepository.findOne({
       where: { id: boardId },
+      relations: ['images'],
     });
 
-    const newBoard = {
-      ...oldBoard,
-      ...updateBoardInput,
-    };
-
-    const result = await this.boardRepository.save({
-      ...newBoard,
-    });
-    console.log(result);
-    return result;
+    console.log(test);
+    return test;
   }
 
   //게시글 삭제
