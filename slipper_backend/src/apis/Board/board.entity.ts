@@ -61,8 +61,8 @@ export class Board {
 
   // @Field(() => [String], { nullable: true })
   // images: string;
-  @JoinColumn()
-  @OneToMany(() => BoardImage, (board) => board.imageUrl)
+
+  @OneToMany(() => BoardImage, (images) => images.board)
   @Field(() => [BoardImage], { nullable: true })
   images: BoardImage[];
 }

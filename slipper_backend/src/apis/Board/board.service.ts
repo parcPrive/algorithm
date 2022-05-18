@@ -17,6 +17,7 @@ export class BoardService {
   async findOne({ boardId }) {
     return await this.boardRepository.findOne({
       where: { id: boardId }, //
+      relations: ['images'],
     });
   }
 
@@ -80,7 +81,8 @@ export class BoardService {
         }
       }),
     );
-
+    console.log(saveImage);
+    result.images = saveImage;
     return result;
   }
 
